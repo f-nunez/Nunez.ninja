@@ -1,6 +1,6 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const Path = require('path');
+const path = require('path');
 const IsProductionMode = Boolean(process.env.WEBPACK_MODE) && process.env.WEBPACK_MODE == 'production';
 // Try the environment variable, otherwise use root for windows '' and linux '/', or just use 'auto' and webpack take care about it
 const AssetPath = Boolean(process.env.ASSET_PATH) ? process.env.ASSET_PATH : 'auto';
@@ -8,11 +8,16 @@ const AssetPath = Boolean(process.env.ASSET_PATH) ? process.env.ASSET_PATH : 'au
 module.exports = {
     entry: './src/app',
     output: {
-        path: Path.resolve(__dirname, '../dist'),
+        path: path.resolve(__dirname, '../dist'),
         filename: 'app.[contenthash:8].js',
         publicPath: AssetPath,
         clean: true,
         assetModuleFilename: 'assets/[hash][ext][query]'
+    },
+    devServer: {
+        static: {
+            directory: path.join(__dirname, '../src'),
+        },
     },
     plugins: [
         new HtmlWebpackPlugin({
@@ -41,15 +46,15 @@ module.exports = {
     ],
     resolve: {
         alias: {
-            '@css': Path.resolve(__dirname, '../src/assets/css'),
-            '@fonts': Path.resolve(__dirname, '../src/assets/fonts'),
-            '@images': Path.resolve(__dirname, '../src/assets/images'),
-            '@js': Path.resolve(__dirname, '../src/assets/js'),
-            '@': Path.resolve(__dirname, '../src')
+            '@css': path.resolve(__dirname, '../src/assets/css'),
+            '@fonts': path.resolve(__dirname, '../src/assets/fonts'),
+            '@images': path.resolve(__dirname, '../src/assets/images'),
+            '@js': path.resolve(__dirname, '../src/assets/js'),
+            '@': path.resolve(__dirname, '../src')
         },
         modules: [
             'node_modules',
-            Path.resolve(__dirname, '../src')
+            path.resolve(__dirname, '../src')
         ],
         extensions: [".js", ".ts"],
     },
