@@ -1,14 +1,18 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const path = require('path');
+const Path = require('path');
+const IsProductionMode = Boolean(process.env.WEBPACK_MODE) && process.env.WEBPACK_MODE == 'production';
+// Try the environment variable, otherwise use root for windows '' and linux '/', or just use 'auto' and webpack take care about it
+const AssetPath = Boolean(process.env.ASSET_PATH) ? process.env.ASSET_PATH : 'auto';
 
 module.exports = {
     entry: './src/app',
     output: {
-        path: path.resolve(__dirname, '../dist'),
+        path: Path.resolve(__dirname, '../dist'),
         filename: 'app.[contenthash:8].js',
-        publicPath: './',
-        clean: true
+        publicPath: AssetPath,
+        clean: true,
+        assetModuleFilename: 'assets/[hash][ext][query]'
     },
     plugins: [
         new HtmlWebpackPlugin({
@@ -16,8 +20,8 @@ module.exports = {
             template: './src/index.html',
             inject: "body",
             minify: {
-                removeComments: true,
-                collapseWhitespace: true
+                removeComments: IsProductionMode,
+                collapseWhitespace: IsProductionMode
             },
         }),
         new HtmlWebpackPlugin({
@@ -25,8 +29,8 @@ module.exports = {
             template: './src/portfolio-details-1.html',
             inject: "body",
             minify: {
-                removeComments: true,
-                collapseWhitespace: true
+                removeComments: IsProductionMode,
+                collapseWhitespace: IsProductionMode
             },
             filename: './portfolio-details-1.html'
         }),
@@ -37,15 +41,15 @@ module.exports = {
     ],
     resolve: {
         alias: {
-            '@css': path.resolve(__dirname, '../src/assets/css'),
-            '@fonts': path.resolve(__dirname, '../src/assets/fonts'),
-            '@images': path.resolve(__dirname, '../src/assets/images'),
-            '@js': path.resolve(__dirname, '../src/assets/js'),
-            '@': path.resolve(__dirname, '../src')
+            '@css': Path.resolve(__dirname, '../src/assets/css'),
+            '@fonts': Path.resolve(__dirname, '../src/assets/fonts'),
+            '@images': Path.resolve(__dirname, '../src/assets/images'),
+            '@js': Path.resolve(__dirname, '../src/assets/js'),
+            '@': Path.resolve(__dirname, '../src')
         },
         modules: [
             'node_modules',
-            path.resolve(__dirname, '../src')
+            Path.resolve(__dirname, '../src')
         ],
         extensions: [".js", ".ts"],
     },
@@ -64,27 +68,34 @@ module.exports = {
                     }
                 }
             },
+            //Single bundle = css + js files
+            // {
+            //     test: /\.(sa|sc|c)ss$/,
+            //     use: ['style-loader', 'css-loader', 'postcss-loader', 'sass-loader']
+            // },
+            //Separated bundle css and js
             {
                 test: /\.(sa|sc|c)ss$/,
-                //Single bundle = css + js files
-                use: ['style-loader', 'css-loader', 'postcss-loader', 'sass-loader'],
-                //Separated bundle
-                // use: [
-                //     {
-                //         loader: MiniCssExtractPlugin.loader,
-                //         options: {
-                //             // you can specify a publicPath here
-                //             // by default it uses publicPath in webpackOptions.output
-                //             publicPath: "./",
-                //         },
-                //     },
-                //     'css-loader',
-                //     "postcss-loader",
-                //     "sass-loader",
-                // ],
+                use: [
+                    {
+                        loader: MiniCssExtractPlugin.loader,
+                        options: {
+                            // you can specify a publicPath here
+                            // by default it uses publicPath in webpackOptions.output
+                            publicPath: AssetPath,
+                        },
+                    },
+                    'css-loader',
+                    "postcss-loader",
+                    "sass-loader",
+                ]
             },
             {
                 test: /\.(png|svg|jpg|jpeg|gif)$/i,
+                type: 'asset/resource',
+            },
+            {
+                test: /\.(woff|woff2|eot|ttf|otf)$/i,
                 type: 'asset/resource',
             },
             {
@@ -125,7 +136,7 @@ module.exports = {
                         urlFilter: (attribute, value, resourcePath) => {
                             // The `attribute` argument contains a name of the HTML attribute.
                             // The `value` argument contains a value of the HTML attribute.
-                            // The `resourcePath` argument contains a path to the loaded HTML file.
+                            // The `resourcePath` argument contains a Path to the loaded HTML file.
 
                             if (/index\.html$/.test(value)) {
                                 return false;
