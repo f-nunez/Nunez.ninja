@@ -1,22 +1,24 @@
-# nunez.ninja
+# Nunez.ninja
 
-static web site
+Personal static web site.
 
 ## Getting Started
 
-Installing dependencies
+Run the following commands from the project folder (Fnunez.Web).
+
+#### Installing dependencies
 
 ```shell
 npm install
 ```
 
-Running development
+#### Building for development and start running on local server
 
 ```shell
 npm run dev
 ```
 
-Deploying production
+#### Building for production and deployed into "dist" folder
 
 ```shell
 npm run build
