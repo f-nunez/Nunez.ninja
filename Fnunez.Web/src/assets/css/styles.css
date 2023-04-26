@@ -26,12 +26,12 @@ h6 {
     font-family: "Raleway", sans-serif;
 }
 
-#main {
+.main {
     margin-top: 50px;
 }
 
 @media (max-width: 992px) {
-    #main {
+    .main {
         margin-top: 30px;
     }
 }
