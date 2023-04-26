@@ -41,6 +41,7 @@
 
 .resume .resume-item ul li {
     padding-bottom: 10px;
+    text-align: justify;
 }
 
 .resume .resume-item:last-child {

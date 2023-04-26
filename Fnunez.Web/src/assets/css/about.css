@@ -22,6 +22,10 @@
     color: #34b7a7;
 }
 
+.about .content p {
+    text-align: justify;
+}
+
 .about .content p:last-child {
     margin-bottom: 0;
 }

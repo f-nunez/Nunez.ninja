@@ -90,8 +90,8 @@
      */
     const portfolioDetailsLightbox = GLightbox({
         selector: '.portfolio-details-lightbox',
-        width: '90%',
-        height: '90vh'
+        height: '100vh',
+        width: '100vw'
     });
 
     /**
@@ -111,7 +111,7 @@
         },
         zoom: {
             enabled: true,
-            maxRatio: 2
+            maxRatio: 3
         }
     });
 
