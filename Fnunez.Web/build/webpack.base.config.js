@@ -39,6 +39,16 @@ module.exports = {
             },
             filename: './portfolio-details-1.html'
         }),
+        new HtmlWebpackPlugin({
+            title: 'Nunez.ninja',
+            template: './src/portfolio-details-2.html',
+            inject: "body",
+            minify: {
+                removeComments: IsProductionMode,
+                collapseWhitespace: IsProductionMode
+            },
+            filename: './portfolio-details-2.html'
+        }),
         new MiniCssExtractPlugin({
             filename: "app.[contenthash:8].css",
             chunkFilename: "[id].css",
@@ -148,6 +158,10 @@ module.exports = {
                             }
 
                             if (/portfolio-details-1\.html$/.test(value)) {
+                                return false;
+                            }
+
+                            if (/portfolio-details-2\.html$/.test(value)) {
                                 return false;
                             }
 
