@@ -125,7 +125,11 @@
   # Portfolio Details
   --------------------------------------------------------------*/
 .portfolio-details {
-    padding-top: 0;
+    padding: 10px;
+}
+
+.portfolio-details .container {
+    max-width: unset;
 }
 
 .portfolio-details .portfolio-details-slider img {
